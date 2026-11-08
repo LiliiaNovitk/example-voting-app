@@ -48,4 +48,7 @@ def hello():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
+    # debug вмикається лише змінною оточення (у dev-стадії Dockerfile)
+    debug_mode = os.getenv("FLASK_DEBUG", "0") == "1"
+    # контейнер має слухати всі інтерфейси, інакше порт не буде доступний ззовні
+    app.run(host='0.0.0.0', port=80, debug=debug_mode, threaded=True)  # nosec B104
